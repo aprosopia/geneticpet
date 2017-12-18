@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {"com.geneticpet.site"})
 
-public class InheritedDiseasesRestApiApp {
+public class GeneticPetApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(InheritedDiseasesRestApiApp.class, args);
+        SpringApplication.run(GeneticPetApp.class, args);
 
     }
 }
