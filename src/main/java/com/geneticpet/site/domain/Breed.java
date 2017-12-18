@@ -7,13 +7,13 @@ import java.util.Map;
  */
 public class Breed {
     public final int id;
-    public final String title;
+    public final String name;
     public final Map<String, DiseaseListEntry> diseasesBySystem;
 
 
-    public Breed(int id, String title, Map<String, DiseaseListEntry> diseasesBySystem) {
+    public Breed(int id, String name, Map<String, DiseaseListEntry> diseasesBySystem) {
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.diseasesBySystem = diseasesBySystem;
     }
 
@@ -26,14 +26,14 @@ public class Breed {
         Breed that = (Breed) o;
 
         if (id != that.id) return false;
-        if (!title.equals(that.title)) return false;
+        if (!name.equals(that.name)) return false;
         return diseasesBySystem.equals(that.diseasesBySystem);
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + title.hashCode();
+        result = 31 * result + name.hashCode();
         result = 31 * result + diseasesBySystem.hashCode();
         return result;
     }
