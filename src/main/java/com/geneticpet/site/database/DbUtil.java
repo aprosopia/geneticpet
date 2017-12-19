@@ -6,13 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbUtil {
-    public static <A> List<A> asList(ResultSet rs, RowConverter<A> converter) throws SQLException {
+
+    public static <A> List<A> asList(ResultSet rs, RowConverter<A> converter) {
 
         ArrayList<A> list = new ArrayList<>();
 
-        while (rs.next()) {
+        try {
+            while (rs.next()) {
 
-            list.add(converter.convert(rs));
+                list.add(converter.convert(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         return list;
