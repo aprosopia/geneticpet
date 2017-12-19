@@ -35,9 +35,9 @@ public class DbUtil {
 
 
     /**
-     * Get a single A. If there are no results, return null.
+     * Get the first row as  A. If there are no results, return null.
      */
-    public static <A> A getSingle(ResultSet rs, RowConverter<A> converter) {
+    public static <A> A getFirst(ResultSet rs, RowConverter<A> converter) {
 
         try {
             if (!rs.next()) {
@@ -51,12 +51,12 @@ public class DbUtil {
     }
 
     /**
-     * Get a unique A. If there are no results, return null. If there is more than one result, throw IllegalStateException
+     * Get a single A. If there are no results, return null. If there is more than one result, throw IllegalStateException
      */
-    public static <A> A getUnique(ResultSet rs, RowConverter<A> converter) {
+    public static <A> A getSingle(ResultSet rs, RowConverter<A> converter) {
 
 
-        A result = getSingle(rs, converter);
+        A result = getFirst(rs, converter);
         try {
             if (rs.next()) {
                 throw new IllegalStateException("more than 1 result");
