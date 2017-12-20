@@ -15,9 +15,18 @@ public class Database {
     @Autowired
     private DataSource dataSource;
 
-    public ResultSet executeUnsafeQuery(PreparedStatement statement) {
+    public ResultSet executeQuery(PreparedStatement statement) {
         try {
             return statement.executeQuery();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void execute(PreparedStatement statement) {
+        try {
+            statement.execute();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

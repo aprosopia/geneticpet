@@ -30,6 +30,7 @@ public class Breed {
         if (id != breed.id) return false;
         if (!name.equals(breed.name)) return false;
         if (!species.equals(breed.species)) return false;
+
         return diseasesBySystem.equals(breed.diseasesBySystem);
     }
 
@@ -40,5 +41,15 @@ public class Breed {
         result = 31 * result + species.hashCode();
         result = 31 * result + diseasesBySystem.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Breed{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", species='" + species + '\'' +
+                ", diseasesBySystem=" + diseasesBySystem +
+                '}';
     }
 }
