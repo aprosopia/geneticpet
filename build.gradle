@@ -25,11 +25,14 @@ targetCompatibility = 1.8
 
 dependencies {
 
-    compile group: 'org.hsqldb', name: 'hsqldb', version: '2.4.0'
+
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+
     compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.4'
     compile group: 'org.flywaydb', name: 'flyway-core', version: '5.0.2'
     compile "org.springframework:spring-jdbc"
     compile("org.springframework.boot:spring-boot-starter-web")
 
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.196'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
