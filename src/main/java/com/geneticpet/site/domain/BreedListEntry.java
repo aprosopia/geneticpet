@@ -31,4 +31,12 @@ public class BreedListEntry {
         result = 31 * result + id;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "BreedListEntry{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

@@ -1,17 +1,20 @@
 package com.geneticpet.site.dao;
 
 import com.geneticpet.site.domain.Breed;
-import com.geneticpet.site.domain.DiseaseListEntry;
+import com.geneticpet.site.domain.BreedListEntry;
+import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by aprosopia on 12/19/17.
@@ -31,7 +34,7 @@ public class BreedDaoTest {
 
         int generatedId = breedDao.saveAndGenerateId(breed);
 
-        Breed expected = new Breed(generatedId,breed.name,breed.species,breed.diseasesBySystem);
+        Breed expected = new Breed(generatedId, breed.name, breed.species, breed.diseasesBySystem);
 
         Breed breedFromDb = breedDao.readById(generatedId);
 
@@ -40,4 +43,24 @@ public class BreedDaoTest {
 
     }
 
+    @Test
+    public void readBySpecies() throws Exception {
+        Breed breed1 = new Breed(-1, "akita", "dog", new HashMap<>());
+        Breed breed2 = new Breed(-1, "dkita", "dog", new HashMap<>());
+        Breed breed3 = new Breed(-1, "fkita", "dog", new HashMap<>());
+
+        int id1 = breedDao.saveAndGenerateId(breed1);
+        int id2 = breedDao.saveAndGenerateId(breed2);
+        int id3 = breedDao.saveAndGenerateId(breed3);
+        List<BreedListEntry> list = new ArrayList<BreedListEntry>();
+        list.add(new BreedListEntry(breed1.name, id1));
+        list.add(new BreedListEntry(breed2.name, id2));
+        list.add(new BreedListEntry(breed3.name, id3));
+
+        List<BreedListEntry> result = breedDao.readBySpecies("dog");
+
+        assertThat(result, Is.is(list));
+
+    }
 }
+

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +30,7 @@ public class BreedController {
     @RequestMapping(value = "/{species}", method = RequestMethod.GET)
     public ResponseEntity<List<BreedListEntry>> bySpecies(@PathVariable("species") String species) {
 
-        ArrayList<BreedListEntry> breeds = new ArrayList<>();
-
+        List<BreedListEntry> breeds = breedDao.readBySpecies(species);
 
         return new ResponseEntity<>(breeds, HttpStatus.OK);
     }

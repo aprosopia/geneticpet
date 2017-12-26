@@ -43,4 +43,14 @@ public class Breed {
         result = 31 * result + (diseasesBySystem != null ? diseasesBySystem.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Breed{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", species='" + species + '\'' +
+                ", diseasesBySystem=" + diseasesBySystem +
+                '}';
+    }
 }

@@ -4,13 +4,16 @@ import com.geneticpet.site.database.Database;
 import com.geneticpet.site.database.DbUtil;
 import com.geneticpet.site.database.RowConverter;
 import com.geneticpet.site.domain.Breed;
+import com.geneticpet.site.domain.BreedListEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -92,6 +95,25 @@ public class BreedDao {
 
         ResultSet rs = database.executeQuery(ps);
         return DbUtil.getSingle(rs, BREED_CONVERTER);
+    }
+
+    public List<BreedListEntry> readBySpecies(String species) {
+        List<BreedListEntry> breeds = new ArrayList<>();
+        PreparedStatement ps = database.prepareStatement("SELECT * FROM BREED WHERE SPECIES = ?");
+        try {
+            ps.setString(1, species);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ResultSet rs = database.executeQuery(ps);
+        try {
+            while (rs.next()) {
+                breeds.add(new BreedListEntry(rs.getString("name"), rs.getInt("id")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return breeds;
     }
 
 
