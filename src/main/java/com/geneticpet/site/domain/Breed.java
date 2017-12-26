@@ -1,5 +1,8 @@
 package com.geneticpet.site.domain;
 
+
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,16 +12,15 @@ public class Breed {
     public final int id;
     public final String name;
     public final String species;
-    public final Map<String, DiseaseListEntry> diseasesBySystem;
+    public final Map<String, List<DiseaseListEntry>> diseasesBySystem;
 
 
-    public Breed(int id, String name, String species, Map<String, DiseaseListEntry> diseasesBySystem) {
+    public Breed(int id, String name, String species, Map<String, List<DiseaseListEntry>> diseasesBySystem) {
         this.id = id;
         this.name = name;
         this.species = species;
         this.diseasesBySystem = diseasesBySystem;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -30,8 +32,7 @@ public class Breed {
         if (id != breed.id) return false;
         if (!name.equals(breed.name)) return false;
         if (!species.equals(breed.species)) return false;
-
-        return diseasesBySystem.equals(breed.diseasesBySystem);
+        return diseasesBySystem != null ? diseasesBySystem.equals(breed.diseasesBySystem) : breed.diseasesBySystem == null;
     }
 
     @Override
@@ -39,17 +40,7 @@ public class Breed {
         int result = id;
         result = 31 * result + name.hashCode();
         result = 31 * result + species.hashCode();
-        result = 31 * result + diseasesBySystem.hashCode();
+        result = 31 * result + (diseasesBySystem != null ? diseasesBySystem.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Breed{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", species='" + species + '\'' +
-                ", diseasesBySystem=" + diseasesBySystem +
-                '}';
     }
 }

@@ -14,8 +14,7 @@ public class Disease {
     public final List<BreedListEntry> affectedBreeds;
 
 
-    public Disease(int id, String name, String system, String description,
-                   List<BreedListEntry> affectedBreeds) {
+    public Disease(int id, String name, String system, String description, List<BreedListEntry> affectedBreeds) {
         this.id = id;
         this.name = name;
         this.system = system;
@@ -28,13 +27,13 @@ public class Disease {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Disease that = (Disease) o;
+        Disease disease = (Disease) o;
 
-        if (id != that.id) return false;
-        if (!name.equals(that.name)) return false;
-        if (!system.equals(that.system)) return false;
-        if (!description.equals(that.description)) return false;
-        return affectedBreeds.equals(that.affectedBreeds);
+        if (id != disease.id) return false;
+        if (!name.equals(disease.name)) return false;
+        if (!system.equals(disease.system)) return false;
+        if (!description.equals(disease.description)) return false;
+        return affectedBreeds != null ? affectedBreeds.equals(disease.affectedBreeds) : disease.affectedBreeds == null;
     }
 
     @Override
@@ -43,7 +42,7 @@ public class Disease {
         result = 31 * result + name.hashCode();
         result = 31 * result + system.hashCode();
         result = 31 * result + description.hashCode();
-        result = 31 * result + affectedBreeds.hashCode();
+        result = 31 * result + (affectedBreeds != null ? affectedBreeds.hashCode() : 0);
         return result;
     }
 }
