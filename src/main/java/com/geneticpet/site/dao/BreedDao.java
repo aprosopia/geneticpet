@@ -80,5 +80,19 @@ public class BreedDao {
         return DbUtil.getSingle(rs, BREED_CONVERTER);
     }
 
+    public Breed readBySpeciesAndId(String species, int id) {
+        PreparedStatement ps = database.prepareStatement("SELECT * FROM BREED WHERE ID = ?  and SPECIES = ?");
+
+        try {
+            ps.setInt(1, id);
+            ps.setString(2, species);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        ResultSet rs = database.executeQuery(ps);
+        return DbUtil.getSingle(rs, BREED_CONVERTER);
+    }
+
 
 }
