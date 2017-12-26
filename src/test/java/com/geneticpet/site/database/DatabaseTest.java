@@ -32,7 +32,7 @@ public class DatabaseTest {
 
         int id2 = database.executeUpdateAndReturnGeneratedKeys(insert);
 
-        assert (id1 + 1 == id2);
+        assertTrue (id1 + 1 == id2);
 
     }
 
