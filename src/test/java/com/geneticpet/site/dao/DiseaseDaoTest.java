@@ -3,21 +3,18 @@ package com.geneticpet.site.dao;
 import com.geneticpet.site.domain.Breed;
 import com.geneticpet.site.domain.Disease;
 import com.geneticpet.site.domain.DiseaseListEntry;
-import jdk.internal.instrumentation.TypeMapping;
-import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by aprosopia on 12/26/17.
@@ -43,23 +40,23 @@ public class DiseaseDaoTest {
     public void listEntryDiseasesForBreedBySystem() {
 
 
-        diseaseDao.save(new Disease(1, "cataracts", "eyes", "desc1", null));
-        diseaseDao.save(new Disease(2, "bataracts", "eyes", "desc1", null));
+        int d1Id = diseaseDao.saveAndGenerateId(new Disease(-1, "cataracts", "eyes", "desc1", null));
+        int d2Id = diseaseDao.saveAndGenerateId(new Disease(-1, "bataracts", "eyes", "desc1", null));
 
 
-        breedDao.save(new Breed(1, "Akita", "dog", null));
+        int b1Id = breedDao.saveAndGenerateId(new Breed(-1, "Akita", "dog", null));
 
-        affectingBreedsDao.link(1, 1);
-        affectingBreedsDao.link(2, 1);
+        affectingBreedsDao.link(d1Id, b1Id);
+        affectingBreedsDao.link(d2Id, b1Id);
 
 
         HashMap<String, List<DiseaseListEntry>> expected = new HashMap<>();
-        List<DiseaseListEntry> diseasesListEntries = asList(new DiseaseListEntry(1, "cataracts"),
-                new DiseaseListEntry(2, "bataracts"));
+        List<DiseaseListEntry> diseasesListEntries = asList(new DiseaseListEntry(d1Id, "cataracts"),
+                new DiseaseListEntry(d2Id, "bataracts"));
         expected.put("eyes", diseasesListEntries);
 
 
-        assertThat(diseaseDao.listEntryDiseasesForBreedBySystem(1), is(expected));
+        assertThat(diseaseDao.listEntryDiseasesForBreedBySystem(b1Id), is(expected));
 
 
     }
