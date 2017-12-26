@@ -29,4 +29,12 @@ public class DiseaseListEntry {
         result = 31 * result + name.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "DiseaseListEntry{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
