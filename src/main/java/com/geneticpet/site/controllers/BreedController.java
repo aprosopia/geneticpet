@@ -29,7 +29,7 @@ public class BreedController {
     DiseaseDao diseaseDao;
 
     @RequestMapping(value = "/{species}", method = RequestMethod.GET)
-    public ResponseEntity bySpecies(@PathVariable("species") String species) {
+    public ResponseEntity<List<BreedListEntry>> bySpecies(@PathVariable("species") String species) {
 
         ArrayList<BreedListEntry> breeds = new ArrayList<>();
 
