@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,10 +51,7 @@ public class BreedDaoTest {
         int id1 = breedDao.saveAndGenerateId(breed1);
         int id2 = breedDao.saveAndGenerateId(breed2);
         int id3 = breedDao.saveAndGenerateId(breed3);
-        List<BreedListEntry> list = new ArrayList<BreedListEntry>();
-        list.add(new BreedListEntry(breed1.name, id1));
-        list.add(new BreedListEntry(breed2.name, id2));
-        list.add(new BreedListEntry(breed3.name, id3));
+
 
         List<BreedListEntry> result = breedDao.readBySpecies("dog");
 
