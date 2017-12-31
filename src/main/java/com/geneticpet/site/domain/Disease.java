@@ -45,4 +45,15 @@ public class Disease {
         result = 31 * result + (affectedBreeds != null ? affectedBreeds.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Disease{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", system='" + system + '\'' +
+                ", description='" + description + '\'' +
+                ", affectedBreeds=" + affectedBreeds +
+                '}';
+    }
 }

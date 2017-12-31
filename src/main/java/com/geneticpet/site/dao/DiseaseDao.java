@@ -3,6 +3,7 @@ package com.geneticpet.site.dao;
 import com.geneticpet.site.database.Database;
 import com.geneticpet.site.database.DbUtil;
 import com.geneticpet.site.database.RowConverter;
+import com.geneticpet.site.domain.BreedListEntry;
 import com.geneticpet.site.domain.Disease;
 import com.geneticpet.site.domain.DiseaseListEntry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,14 @@ import java.util.Map;
 public class DiseaseDao {
     @Autowired
     Database database;
+
+
+    private static final RowConverter<Disease> DISEASE_ROW_CONVERTER = rs -> new Disease(rs.getInt("id"), rs.getString("name"),
+            rs.getString("system"), rs.getString("description"), new ArrayList<>());
+
+    private static final RowConverter<BreedListEntry> BREED_LIST_ENTRY_ROW_CONVERTER = rs -> new BreedListEntry(rs.getString("name"), rs.getInt("id"));
+
+    private static final RowConverter<DiseaseListEntry> DISEASE_LIST_ENTRY_ROW_CONVERTER = rs -> new DiseaseListEntry(rs.getInt("id"), rs.getString("name"));
 
     public Map<String, List<DiseaseListEntry>> listEntryDiseasesForBreedBySystem(int breedId) {
 
@@ -44,20 +53,7 @@ public class DiseaseDao {
                 ResultSet rs = ps.executeQuery();
 
 
-                List<Disease> diseases = DbUtil.asList(rs, new RowConverter<Disease>() {
-
-                    @Override
-                    public Disease convert(ResultSet rs) throws SQLException {
-
-
-                        return new Disease(rs.getInt("id"), rs.getString("name"),
-                                rs.getString("system"), rs.getString("description"), null);
-
-
-                    }
-
-                    ;
-                });
+                List<Disease> diseases = DbUtil.asList(rs, DISEASE_ROW_CONVERTER);
 
                 Map<String, List<DiseaseListEntry>> diseasesBySystem = new HashMap<>();
 
@@ -137,5 +133,73 @@ public class DiseaseDao {
         }
 
 
+    }
+
+    public List<DiseaseListEntry> listDiseases() {
+
+
+        try {
+
+            try (Connection connection = database.getConnection()) {
+                PreparedStatement ps = connection.prepareStatement("SELECT DISEASE.name,DISEASE.id FROM DISEASE");
+
+                ResultSet rs = ps.executeQuery();
+
+                return DbUtil.asList(rs, DISEASE_LIST_ENTRY_ROW_CONVERTER);
+
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public Disease readDiseaseById(int diseaseID) {
+
+        try {
+
+            try (Connection connection = database.getConnection()) {
+
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM DISEASE WHERE DISEASE.id = ?");
+                try {
+                    ps.setInt(1, diseaseID);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                ResultSet rs = ps.executeQuery();
+
+
+                return DbUtil.getSingle(rs, DISEASE_ROW_CONVERTER);
+
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<BreedListEntry> getAffectedBreedsForDiseaseId(int diseaseId) {
+        try {
+
+            try (Connection connection = database.getConnection()) {
+
+
+                PreparedStatement psAffectedBreeds = connection.prepareStatement("SELECT BREED.name, BREED.id\n" +
+                        "FROM BREED\n" +
+                        "  JOIN DISEASES_AFFECTING_BREEDS ON BREED.id = DISEASES_AFFECTING_BREEDS.breed_id\n" +
+                        "JOIN DISEASE ON DISEASES_AFFECTING_BREEDS.disease_id = DISEASE.id WHERE DISEASE.id = ?;");
+
+                psAffectedBreeds.setInt(1, diseaseId);
+
+                ResultSet rsAffectedBreeds = psAffectedBreeds.executeQuery();
+
+                return DbUtil.asList(rsAffectedBreeds, BREED_LIST_ENTRY_ROW_CONVERTER);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

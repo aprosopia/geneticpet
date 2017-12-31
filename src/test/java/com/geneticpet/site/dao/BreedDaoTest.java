@@ -2,7 +2,7 @@ package com.geneticpet.site.dao;
 
 import com.geneticpet.site.domain.Breed;
 import com.geneticpet.site.domain.BreedListEntry;
-import org.hamcrest.core.Is;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,8 @@ public class BreedDaoTest {
 
         List<BreedListEntry> result = breedDao.readBySpecies("dog");
 
-        assertThat(result, Is.is(list));
+        assertThat(result, Matchers.hasItems(new BreedListEntry(breed1.name, id1),
+                new BreedListEntry(breed2.name, id2), new BreedListEntry(breed3.name, id3)));
 
     }
 }
