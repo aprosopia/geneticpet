@@ -70,13 +70,11 @@ public class BreedDao {
                 PreparedStatement preparedStatement = connection
                         .prepareStatement("INSERT INTO BREED (id, name, species) VALUES (?,?,?)");
 
-                try {
-                    preparedStatement.setInt(1, breed.id);
-                    preparedStatement.setString(2, breed.name);
-                    preparedStatement.setString(3, breed.species);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+
+                preparedStatement.setInt(1, breed.id);
+                preparedStatement.setString(2, breed.name);
+                preparedStatement.setString(3, breed.species);
+
 
                 return preparedStatement.executeUpdate();
             }
