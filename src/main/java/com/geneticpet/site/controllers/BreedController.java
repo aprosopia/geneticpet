@@ -6,11 +6,13 @@ import com.geneticpet.site.domain.Breed;
 import com.geneticpet.site.domain.BreedListEntry;
 import com.geneticpet.site.domain.DiseaseListEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +41,6 @@ public class BreedController {
     @RequestMapping(value = "/{species}/{id}", method = RequestMethod.GET)
     public ResponseEntity<Breed> bySpeciesAndId(@PathVariable("species") String species,
                                                 @PathVariable("id") int id) {
-
-
         Breed breed = breedDao.readBySpeciesAndId(species, id);
         Map<String, List<DiseaseListEntry>> diseasesForBreedBySystem = diseaseDao.listEntryDiseasesForBreedBySystem(breed.id);
         Breed result = new Breed(breed.id, breed.name, breed.species, diseasesForBreedBySystem);
@@ -52,7 +52,13 @@ public class BreedController {
     public ResponseEntity createBreed(@RequestBody Breed breed, UriComponentsBuilder ucBuilder) throws URISyntaxException {
 
 
-        return null;
-    }
+        int id = breedDao.saveAndGenerateId(breed);
 
+        HttpHeaders headers = new HttpHeaders();
+        URI uriForRedirect = ucBuilder.path("/breed/{species}/{id}").buildAndExpand(breed.species, id).toUri();
+        headers.setLocation(uriForRedirect);
+
+        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+    }
 }
+

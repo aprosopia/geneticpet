@@ -1,6 +1,8 @@
 package com.geneticpet.site.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,8 @@ public class Breed {
     public final Map<String, List<DiseaseListEntry>> diseasesBySystem;
 
 
-    public Breed(int id, String name, String species, Map<String, List<DiseaseListEntry>> diseasesBySystem) {
+    @JsonCreator
+    public Breed(@JsonProperty("id") int id, @JsonProperty("name") String name, @JsonProperty("species") String species, @JsonProperty("diseasesBySystem") Map<String, List<DiseaseListEntry>> diseasesBySystem) {
         this.id = id;
         this.name = name;
         this.species = species;
