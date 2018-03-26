@@ -39,7 +39,7 @@ public class BreedDao {
             try (Connection connection = database.getConnection()) {
 
                 PreparedStatement preparedStatement = connection
-                        .prepareStatement("INSERT INTO BREED (name,species) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+                        .prepareStatement("INSERT INTO geneticpet.BREED(name,species) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, breed.name);
                 preparedStatement.setString(2, breed.species);
 
@@ -68,7 +68,7 @@ public class BreedDao {
             try (Connection connection = database.getConnection()) {
 
                 PreparedStatement preparedStatement = connection
-                        .prepareStatement("INSERT INTO BREED (id, name, species) VALUES (?,?,?)");
+                        .prepareStatement("INSERT INTO geneticpet.BREED (id, name, species) VALUES (?,?,?)");
 
 
                 preparedStatement.setInt(1, breed.id);
@@ -92,7 +92,7 @@ public class BreedDao {
 
             try (Connection connection = database.getConnection()) {
 
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM BREED WHERE ID = ? ");
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM geneticpet.BREED WHERE ID = ? ");
 
                 ps.setInt(1, id);
 
@@ -114,7 +114,7 @@ public class BreedDao {
 
             try (Connection connection = database.getConnection()) {
 
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM BREED WHERE ID = ?  AND SPECIES = ?");
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM geneticpet.BREED WHERE ID = ?  AND SPECIES = ?");
 
                 ps.setInt(1, id);
                 ps.setString(2, species);
@@ -135,7 +135,7 @@ public class BreedDao {
 
             try (Connection connection = database.getConnection()) {
 
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM BREED WHERE SPECIES = ?");
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM geneticpet.BREED WHERE SPECIES = ?");
 
                 ps.setString(1, species);
 
@@ -150,4 +150,21 @@ public class BreedDao {
 
     }
 
+    public int deleteById(int id) {
+        try {
+            try (Connection connection = database.getConnection()) {
+                PreparedStatement psAffected = connection.prepareStatement("DELETE FROM geneticpet.DISEASES_AFFECTING_BREEDS WHERE disease_id= ?");
+                psAffected.setInt(1,id);
+                psAffected.executeUpdate();
+                PreparedStatement ps = connection.prepareStatement("DELETE FROM geneticpet.BREED WHERE ID = ?");
+                ps.setInt(1, id);
+                return ps.executeUpdate();
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
+

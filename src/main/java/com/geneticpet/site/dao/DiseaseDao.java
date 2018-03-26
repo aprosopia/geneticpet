@@ -43,9 +43,9 @@ public class DiseaseDao {
                         "  DISEASE.system,\n" +
                         "  DISEASE.description,\n" +
                         "  DISEASE.id\n" +
-                        "FROM DISEASE\n" +
-                        "  JOIN DISEASES_AFFECTING_BREEDS ON DISEASE.id = DISEASES_AFFECTING_BREEDS.disease_id\n" +
-                        "  JOIN BREED ON DISEASES_AFFECTING_BREEDS.breed_id = BREED.id\n" +
+                        "FROM geneticpet.DISEASE\n" +
+                        "  JOIN geneticpet.DISEASES_AFFECTING_BREEDS ON geneticpet.DISEASE.id = geneticpet.DISEASES_AFFECTING_BREEDS.disease_id\n" +
+                        "  JOIN geneticpet.BREED ON geneticpet.DISEASES_AFFECTING_BREEDS.breed_id = geneticpet.BREED.id\n" +
                         "WHERE BREED.id = ?;");
 
                 ps.setInt(1, breedId);
@@ -86,7 +86,7 @@ public class DiseaseDao {
 
             try (Connection connection = database.getConnection()) {
 
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO DISEASE (name,system,description) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO geneticpet.DISEASE (name,system,description) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
                 preparedStatement.setString(1, disease.name);
                 preparedStatement.setString(2, disease.system);
@@ -117,7 +117,7 @@ public class DiseaseDao {
 
             try (Connection connection = database.getConnection()) {
 
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO DISEASE (id,name,system,description) VALUES (?,?,?,?)");
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO geneticpet.DISEASE (id,name,system,description) VALUES (?,?,?,?)");
 
 
                 preparedStatement.setInt(1, disease.id);
@@ -141,7 +141,7 @@ public class DiseaseDao {
         try {
 
             try (Connection connection = database.getConnection()) {
-                PreparedStatement ps = connection.prepareStatement("SELECT DISEASE.name,DISEASE.id FROM DISEASE");
+                PreparedStatement ps = connection.prepareStatement("SELECT DISEASE.name,DISEASE.id FROM geneticpet.DISEASE");
 
                 ResultSet rs = ps.executeQuery();
 
@@ -161,7 +161,7 @@ public class DiseaseDao {
 
             try (Connection connection = database.getConnection()) {
 
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM DISEASE WHERE DISEASE.id = ?");
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM geneticpet.DISEASE WHERE DISEASE.id = ?");
                 try {
                     ps.setInt(1, diseaseID);
                 } catch (SQLException e) {
@@ -187,9 +187,9 @@ public class DiseaseDao {
 
 
                 PreparedStatement psAffectedBreeds = connection.prepareStatement("SELECT BREED.name, BREED.id\n" +
-                        "FROM BREED\n" +
-                        "  JOIN DISEASES_AFFECTING_BREEDS ON BREED.id = DISEASES_AFFECTING_BREEDS.breed_id\n" +
-                        "JOIN DISEASE ON DISEASES_AFFECTING_BREEDS.disease_id = DISEASE.id WHERE DISEASE.id = ?;");
+                        "FROM geneticpet.BREED\n" +
+                        "JOIN geneticpet.DISEASES_AFFECTING_BREEDS ON geneticpet.BREED.id = geneticpet.DISEASES_AFFECTING_BREEDS.breed_id\n" +
+                        "JOIN geneticpet.DISEASE ON geneticpet.DISEASES_AFFECTING_BREEDS.disease_id = geneticpet.DISEASE.id WHERE DISEASE.id = ?;");
 
                 psAffectedBreeds.setInt(1, diseaseId);
 
@@ -202,4 +202,21 @@ public class DiseaseDao {
             throw new RuntimeException(e);
         }
     }
+
+    public int deleteDiseaseById(int diseaseId) {
+        try {
+            try (Connection connection = database.getConnection()) {
+
+                PreparedStatement ps = connection.prepareStatement("DELETE FROM geneticpet.DISEASE WHERE ID = ?");
+                ps.setInt(1, diseaseId);
+
+                return ps.executeUpdate();
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+
+
