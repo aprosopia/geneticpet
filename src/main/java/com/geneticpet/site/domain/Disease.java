@@ -1,5 +1,7 @@
 package com.geneticpet.site.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -14,7 +16,9 @@ public class Disease {
     public final List<BreedListEntry> affectedBreeds;
 
 
-    public Disease(int id, String name, String system, String description, List<BreedListEntry> affectedBreeds) {
+    public Disease(@JsonProperty("id") int id, @JsonProperty("name") String name,
+                   @JsonProperty("system") String system, @JsonProperty("description") String description,
+                   @JsonProperty("affectedBreeds") List<BreedListEntry> affectedBreeds) {
         this.id = id;
         this.name = name;
         this.system = system;

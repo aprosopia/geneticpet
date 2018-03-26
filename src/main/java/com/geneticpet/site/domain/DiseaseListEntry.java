@@ -1,5 +1,7 @@
 package com.geneticpet.site.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by aprosopia on 12/18/17.
  */
@@ -7,7 +9,7 @@ public class DiseaseListEntry {
     public final int id;
     public final String name;
 
-    public DiseaseListEntry(int id, String name) {
+    public DiseaseListEntry(@JsonProperty("id")int id,@JsonProperty("name") String name) {
         this.id = id;
         this.name = name;
     }

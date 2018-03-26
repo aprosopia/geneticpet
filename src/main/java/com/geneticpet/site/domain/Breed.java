@@ -18,7 +18,8 @@ public class Breed {
 
 
     @JsonCreator
-    public Breed(@JsonProperty("id") int id, @JsonProperty("name") String name, @JsonProperty("species") String species, @JsonProperty("diseasesBySystem") Map<String, List<DiseaseListEntry>> diseasesBySystem) {
+    public Breed(@JsonProperty("id") int id, @JsonProperty("name") String name,
+                 @JsonProperty("species") String species, @JsonProperty("diseasesBySystem") Map<String, List<DiseaseListEntry>> diseasesBySystem) {
         this.id = id;
         this.name = name;
         this.species = species;
