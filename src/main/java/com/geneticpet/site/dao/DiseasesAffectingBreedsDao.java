@@ -25,7 +25,7 @@ public class DiseasesAffectingBreedsDao {
 
             try (Connection connection = database.getConnection()) {
 
-                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO DISEASES_AFFECTING_BREEDS (disease_id, breed_id) VALUES (?,?)");
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO geneticpet.DISEASES_AFFECTING_BREEDS (disease_id, breed_id) VALUES (?,?)");
                 preparedStatement.setInt(1, diseaseId);
                 preparedStatement.setInt(2, breedId);
                 return preparedStatement.executeUpdate();
