@@ -29,6 +29,7 @@ public class BreedController {
     @Autowired
     DiseaseDao diseaseDao;
 
+
     @RequestMapping(value = "/{species}", method = RequestMethod.GET)
     public ResponseEntity<List<BreedListEntry>> bySpecies(@PathVariable("species") String species) {
 
@@ -36,7 +37,6 @@ public class BreedController {
 
         return new ResponseEntity<>(breeds, HttpStatus.OK);
     }
-
 
     @RequestMapping(value = "/{species}/{id}", method = RequestMethod.GET)
     public ResponseEntity<Breed> bySpeciesAndId(@PathVariable("species") String species,
@@ -48,9 +48,8 @@ public class BreedController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/create/", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity createBreed(@RequestBody Breed breed, UriComponentsBuilder ucBuilder) throws URISyntaxException {
-
 
         int id = breedDao.saveAndGenerateId(breed);
 
@@ -60,5 +59,20 @@ public class BreedController {
 
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteBreed(@PathVariable("id") int id) {
+
+        int result = breedDao.deleteById(id);
+        if (result == 0) {
+            return new ResponseEntity("There is no such breed in Wonderland.", HttpStatus.I_AM_A_TEAPOT);
+        } else {
+            return new ResponseEntity("This breed has been removed from the gene pool.", HttpStatus.OK);
+        }
+
+    }
+
+
 }
+
 
